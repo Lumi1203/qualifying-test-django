@@ -1,0 +1,45 @@
+{% extends 'taketest/base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Qualifying Test</h2>
+    <form id="testForm" method="POST" action="{% url 'save_result' %}">
+        {% csrf_token %}
+
+        <div id="questionContainer">
+            {% for q in questions %}
+                <div class="card mb-3 p-3">
+                    <h5>{{ forloop.counter }}. {{ q.question|safe }}</h5>
+
+                    {% with options=q.incorrect_answers|add:q.correct_answer %}
+                        {% regroup options by random as shuffled %}
+                    {% endwith %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" name="score" id="scoreField">
+        <input type="hidden" name="total" value="{{ questions|length }}">
+
+        <button type="button" class="btn btn-primary mt-3" onclick="calculateScore()">
+            Submit Test
+        </button>
+    </form>
+</div>
+
+<script>
+function calculateScore() {
+    let score = 0;
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach((card, index) => {
+        const selected = card.querySelector('input[type="radio"]:checked');
+        if (selected && selected.value === "correct") score++;
+    });
+
+    document.getElementById("scoreField").value = score;
+    document.getElementById("testForm").submit();
+}
+</script>
+
+{% endblock %}

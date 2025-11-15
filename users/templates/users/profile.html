@@ -1,0 +1,14 @@
+{% extends 'taketest/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Your Profile</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

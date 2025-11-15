@@ -1,0 +1,13 @@
+{% extends 'taketest/base.html' %}
+{% block content %}
+<div class="container mt-4 text-center">
+    <h2>Your Result</h2>
+
+    <div class="alert alert-info mt-4">
+        <h3>{{ score }} / {{ total }}</h3>
+    </div>
+
+    <a href="{% url 'take_test' %}" class="btn btn-primary">Try Again</a>
+    <a href="{% url 'my_results' %}" class="btn btn-secondary">View Past Results</a>
+</div>
+{% endblock %}

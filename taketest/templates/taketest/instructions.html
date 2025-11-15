@@ -1,0 +1,24 @@
+{% extends 'taketest/base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 700px;">
+
+    <h2 class="mb-4 text-center">Test Instructions</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">The test consists of multiple-choice questions fetched in real time.</li>
+                <li class="list-group-item">You will have a limited amount of time to complete each test (if you implement a timer later).</li>
+                <li class="list-group-item">Each correct answer gives you one point; there is no negative marking.</li>
+                <li class="list-group-item">Make sure you are logged in to save your results.</li>
+                <li class="list-group-item">Do not refresh the page while taking the test, or your progress may be lost.</li>
+            </ul>
+            <div class="mt-4 text-center">
+                <a href="{% url 'take_test' %}" class="btn btn-primary">Start Test</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

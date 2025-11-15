@@ -1,0 +1,24 @@
+{% extends 'taketest/base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>My Previous Test Results</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results %}
+                <tr>
+                    <td>{{ r.date_taken }}</td>
+                    <td>{{ r.score }} / {{ r.total_questions }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

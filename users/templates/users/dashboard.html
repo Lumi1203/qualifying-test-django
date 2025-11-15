@@ -1,0 +1,26 @@
+{% extends 'taketest/base.html' %}
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+
+    <!-- Profile section -->
+    <div class="text-center mb-5">
+        <!-- Example profile photo, you can use {{ user.profile.photo.url }} if you have a profile model -->
+        <img src="https://via.placeholder.com/120" class="rounded-circle mb-3" alt="Profile Photo">
+        <h3>{{ request.user.username }}</h3>
+    </div>
+
+    <!-- Dashboard links -->
+    <div class="list-group">
+        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
+            Manage Your Profile
+        </a>
+        <a href="{% url 'take_test' %}" class="list-group-item list-group-item-action">
+            Take Test
+        </a>
+        <a href="{% url 'test_instructions' %}" class="list-group-item list-group-item-action">
+            Test Instructions
+        </a>
+    </div>
+
+</div>
+{% endblock %}
