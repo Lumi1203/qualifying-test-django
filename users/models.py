@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -7,3 +9,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+class Profile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='profile_photos/', default='default.jpg')
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"

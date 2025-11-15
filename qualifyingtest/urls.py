@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
 def home_redirect(request):
     return redirect('login')
@@ -28,6 +30,9 @@ urlpatterns = [
     path('', home_redirect, name='home'),
     path('taketest/', include('taketest.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 urlpatterns += [

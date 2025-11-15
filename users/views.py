@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import RegisterForm, UpdateProfileForm
+from .forms import RegisterForm, UpdateProfileForm, UserUpdateForm
 
 
 def register_view(request):
@@ -36,25 +36,34 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, "Log out successful!")
     return redirect('login')
 
 
 @login_required
 def profile_view(request):
-    if request.method == 'POST':
-        form = UpdateProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Profile updated!")
+    user = request.user
+    profile = user.profile
+
+    if request.method == "POST":
+        user_form = UserUpdateForm(request.POST, instance=user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Profile Update successful!")
             return redirect('profile')
     else:
-        form = UpdateProfileForm(instance=request.user)
+        user_form = UserUpdateForm(instance=user)
+        profile_form = UpdateProfileForm(instance=profile)
 
-    return render(request, 'users/profile.html', {'form': form})
+    return render(request, "users/profile.html", {
+        "user_form": user_form,
+        "profile_form": profile_form,
+        "profile": profile,
+    })
 
-@login_required
-def test_instructions(request):
-    return render(request, 'taketest/instructions.html')
 
 @login_required
 def dashboard_view(request):
