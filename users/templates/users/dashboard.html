@@ -1,26 +1,53 @@
 {% extends 'taketest/base.html' %}
+{% load static %}
 {% block content %}
-<div class="container mt-5" style="max-width: 600px;">
+
+<link rel="stylesheet" href="{% static 'users/css/dashboard.css' %}">
+
+<div class="container mt-5" style="max-width: 900px;">
 
     <!-- Profile section -->
     <div class="text-center mb-5">
-        <!-- Example profile photo, you can use {{ user.profile.photo.url }} if you have a profile model -->
-        <img src="https://via.placeholder.com/120" class="rounded-circle mb-3" alt="Profile Photo">
+        <img src="{{ request.user.profile.photo.url }}"
+             class="rounded-circle mb-3"
+             style="width: 140px; height: 140px; object-fit: cover;">
         <h3>{{ request.user.username }}</h3>
+        <p class="text-muted">Welcome back!</p>
     </div>
 
-    <!-- Dashboard links -->
-    <div class="list-group">
-        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
-            Manage Your Profile
-        </a>
-        <a href="{% url 'take_test' %}" class="list-group-item list-group-item-action">
-            Take Test
-        </a>
-        <a href="{% url 'test_instructions' %}" class="list-group-item list-group-item-action">
-            Test Instructions
-        </a>
+    <!-- Dashboard Tiles -->
+    <div class="row g-4">
+
+        <!-- Manage Profile -->
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'profile' %}" class="dashboard-tile tile-profile d-block">
+                Manage Profile
+            </a>
+        </div>
+
+        <!-- Take Test -->
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'take_test' %}" class="dashboard-tile tile-test d-block">
+                Take Test
+            </a>
+        </div>
+
+        <!-- Test Instructions -->
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'test_instructions' %}" class="dashboard-tile tile-instructions d-block">
+                Test Instructions
+            </a>
+        </div>
+
+        <!-- Manage Password -->
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'password_change' %}" class="dashboard-tile tile-password d-block">
+                Change Password
+            </a>
+        </div>
+
     </div>
 
 </div>
+
 {% endblock %}
