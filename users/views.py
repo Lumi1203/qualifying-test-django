@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.http import HttpResponseForbidden
 from .forms import RegisterForm, UpdateProfileForm, UserUpdateForm
 
 
@@ -10,7 +10,10 @@ def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.role = form.cleaned_data["role"]
+            user.examiner_id = form.cleaned_data["examiner_id"]
+            user.save()
             messages.success(request, "Account created successfully! Please log in.")
             return redirect('login')
     else:
@@ -69,3 +72,15 @@ def profile_view(request):
 def dashboard_view(request):
     
     return render(request, 'users/dashboard.html')
+
+def examiner_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.role != "examiner":
+            return HttpResponseForbidden("You are not authorized to access this page.")
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
+@examiner_required
+def question_bank(request):
+    return render(request, "taketest/question_bank.html")

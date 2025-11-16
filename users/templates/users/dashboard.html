@@ -18,7 +18,14 @@
     <!-- Dashboard Tiles -->
     <div class="row g-4">
 
-        <!-- Manage Profile -->
+        {% if request.user.role == "examiner" %}
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'question_bank' %}" class="dashboard-tile tile-question d-block">
+                Question Bank
+            </a>
+        </div>
+        {% endif %}
+      
         <div class="col-md-6 col-lg-3">
             <a href="{% url 'profile' %}" class="dashboard-tile tile-profile d-block">
                 Manage Profile
@@ -31,8 +38,6 @@
                 Take Test
             </a>
         </div>
-
-        <!-- Test Instructions -->
         <div class="col-md-6 col-lg-3">
             <a href="{% url 'test_instructions' %}" class="dashboard-tile tile-instructions d-block">
                 Test Instructions
