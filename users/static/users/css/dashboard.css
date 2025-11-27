@@ -18,8 +18,8 @@
   color: white;
 }
 
-.tile-question {background: #011431;}
+.tile-question {background: #1f4070;}
 .tile-profile { background: #011431; }
 .tile-test { background: #1f4070; } 
-.tile-instructions { background: #1f4070} 
-.tile-password { background: #011431; }     
+.tile-instructions { background: #011431} 
+.tile-password { background: #1f4070; }     
