@@ -6,14 +6,12 @@
 
 <div class="container mt-5" style="max-width: 900px;">
 
-    <!-- Profile section -->
     <div class="text-center mb-5">
         <img src="{{ profile.photo_url }}" class="rounded-circle" style="width:150px; height:150px; object-fit:cover;">
         <h3>{{ request.user.username }}</h3>
         <p class="text-muted">Welcome back!</p>
     </div>
 
-    <!-- Dashboard Tiles -->
     <div class="row g-4">
 
         {% if request.user.role == "examiner" %}
@@ -30,7 +28,6 @@
             </a>
         </div>
 
-        <!-- Take Test -->
         <div class="col-md-6 col-lg-3">
             <a href="{% url 'take_test' %}" class="dashboard-tile tile-test d-block">
                 Take Test
@@ -42,7 +39,6 @@
             </a>
         </div>
 
-        <!-- Manage Password -->
         <div class="col-md-6 col-lg-3">
             <a href="{% url 'password_change' %}" class="dashboard-tile tile-password d-block">
                 Change Password

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from .forms import RegisterForm, UpdateProfileForm, UserUpdateForm
+from taketest.models import Question
 
 
 
@@ -86,4 +87,8 @@ def examiner_required(view_func):
 @login_required
 @examiner_required
 def question_bank(request):
-    return render(request, "taketest/question_bank.html")
+    questions = Question.objects.all().select_related("examiner")
+
+    return render(request, "taketest/question_bank.html", {
+        "questions": questions
+    })

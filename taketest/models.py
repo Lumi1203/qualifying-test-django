@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
 
 class TestResult(models.Model):
@@ -18,6 +17,7 @@ class Question(models.Model):
     examiner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name="questions",
         limit_choices_to={"role": "examiner"}
     )
     text = models.TextField()

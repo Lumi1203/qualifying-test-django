@@ -1,27 +1,31 @@
 {% extends 'taketest/base.html' %}
 {% block content %}
 
-<h2>My Question Bank</h2>
+<h2>Question Bank</h2>
 
 <a href="{% url 'add_question' %}" class="btn btn-success mb-3">➕ Add Question</a>
 
 <table class="table table-bordered">
 <tr>
     <th>Question</th>
+    <th>Added By</th>
     <th>Actions</th>
 </tr>
 
 {% for q in questions %}
 <tr>
     <td>{{ q.text }}</td>
+    <td>{{ q.examiner.first_name }} {{ q.examiner.last_name }}</td>
     <td>
-        <a href="{% url 'edit_question' q.id %}" class="btn btn-sm btn-warning">Edit</a>
-        <a href="{% url 'delete_question' q.id %}" class="btn btn-sm btn-danger"
-           onclick="return confirm('Delete this question?')">Delete</a>
+        {% if request.user.is_superuser or q.examiner == request.user %}
+            <a href="{% url 'edit_question' q.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'delete_question' q.id %}" class="btn btn-sm btn-danger"
+               onclick="return confirm('Are you sure?');">Delete</a>
+        {% endif %}
     </td>
 </tr>
 {% empty %}
-<tr><td colspan="2">No questions yet.</td></tr>
+<tr><td colspan="3">No questions yet.</td></tr>
 {% endfor %}
 </table>
 

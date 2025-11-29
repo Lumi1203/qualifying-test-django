@@ -5,24 +5,27 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-
+from django.http import HttpResponseForbidden
 from .models import TestResult, Question
 
 
 def examiner_required(view_func):
     @wraps(view_func)
-    def wrapper(request, *args, **kwargs):
-        if request.user.role != "examiner":
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
             raise PermissionDenied
+
+        if request.user.role != "examiner" and not request.user.is_superuser:
+            raise PermissionDenied
+
         return view_func(request, *args, **kwargs)
-    return wrapper
+    return _wrapped_view
 
 
 @login_required
 def take_test(request):
     final_questions = []
 
-    # ---- 1️⃣ DB questions (max 3) ----
     db_questions = list(Question.objects.all())
     random.shuffle(db_questions)
 
@@ -109,7 +112,7 @@ def test_instructions(request):
 @login_required
 @examiner_required
 def question_bank(request):
-    questions = Question.objects.filter(examiner=request.user)
+    questions = Question.objects.all().select_related("examiner").order_by('-created_at')
     return render(request, "taketest/question_bank.html", {
         "questions": questions
     })
@@ -139,7 +142,10 @@ def add_question(request):
 @login_required
 @examiner_required
 def edit_question(request, pk):
-    question = get_object_or_404(Question, pk=pk, examiner=request.user)
+    question = get_object_or_404(Question, pk=pk)
+
+    if not (request.user.is_superuser or question.examiner == request.user):
+        return HttpResponseForbidden("You cannot edit this question.")
 
     if request.method == "POST":
         question.text = request.POST["text"]
@@ -153,16 +159,23 @@ def edit_question(request, pk):
         messages.success(request, "Question updated successfully.")
         return redirect("question_bank")
 
-    return render(request, "taketest/edit_question.html", {"question": question})
+    return render(request, "taketest/edit_question.html", {
+        "question": question
+    })
+
 
 
 
 @login_required
 @examiner_required
 def delete_question(request, pk):
-    question = get_object_or_404(Question, pk=pk, examiner=request.user)
-    question.delete()
+    question = get_object_or_404(Question, pk=pk)
 
-    messages.warning(request, "Question deleted.")
+    if not (request.user.is_superuser or question.examiner == request.user):
+        return HttpResponseForbidden("You cannot delete this question.")
+
+    question.delete()
+    messages.success(request, "Question deleted successfully.")
     return redirect("question_bank")
+
 
