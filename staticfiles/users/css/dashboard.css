@@ -1,0 +1,25 @@
+
+.dashboard-tile {
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dashboard-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  text-decoration: underline;
+  color: white;
+}
+
+.tile-question {background: #1f4070;}
+.tile-profile { background: #011431; }
+.tile-test { background: #1f4070; } 
+.tile-instructions { background: #011431} 
+.tile-password { background: #1f4070; }     

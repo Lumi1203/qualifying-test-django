@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden
 from .forms import RegisterForm, UpdateProfileForm, UserUpdateForm
 
 
+
 def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -70,8 +71,9 @@ def profile_view(request):
 
 @login_required
 def dashboard_view(request):
-    
-    return render(request, 'users/dashboard.html')
+    return render(request, 'users/dashboard.html', {
+        'profile': request.user.profile
+    })
 
 def examiner_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -81,6 +83,7 @@ def examiner_required(view_func):
     return wrapper
 
 
+@login_required
 @examiner_required
 def question_bank(request):
     return render(request, "taketest/question_bank.html")

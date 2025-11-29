@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class CustomUser(AbstractUser):
@@ -16,9 +17,24 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
     
+
+User = get_user_model()
+
+
 class Profile(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='profile_photos/', default='default.jpg')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(
+        storage=MediaCloudinaryStorage(),
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+    @property
+    def photo_url(self):
+        
+        if self.photo:
+            return self.photo.url
+        return "https://res.cloudinary.com/dqgi7eoks/image/upload/v1764432082/default_dd0mqb.jpg"

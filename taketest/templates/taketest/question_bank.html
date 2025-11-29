@@ -1,6 +1,28 @@
-{% extends "taketest/base.html" %}
+{% extends 'taketest/base.html' %}
 {% block content %}
-    <div class="container mt-4">
-        
-    </div>
-{% endblock content %}
+
+<h2>My Question Bank</h2>
+
+<a href="{% url 'add_question' %}" class="btn btn-success mb-3">➕ Add Question</a>
+
+<table class="table table-bordered">
+<tr>
+    <th>Question</th>
+    <th>Actions</th>
+</tr>
+
+{% for q in questions %}
+<tr>
+    <td>{{ q.text }}</td>
+    <td>
+        <a href="{% url 'edit_question' q.id %}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{% url 'delete_question' q.id %}" class="btn btn-sm btn-danger"
+           onclick="return confirm('Delete this question?')">Delete</a>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="2">No questions yet.</td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -7,10 +7,7 @@
     <h2 class="text-center mb-4">Your Profile</h2>
 
     <div class="text-center mb-4">
-        <img id="profilePreview"
-             src="{{ profile.photo.url }}"
-             class="rounded-circle"
-             style="width: 150px; height: 150px; object-fit: cover;">
+        <img src="{{ profile.photo_url }}" class="rounded-circle" style="width:150px; height:150px; object-fit:cover;">
     </div>
 
     <form method="POST" enctype="multipart/form-data">

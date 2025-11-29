@@ -38,8 +38,8 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'address']
 
 class UpdateProfileForm(forms.ModelForm):
-    password = None  # hide password field
-
+    password = None 
+    
     class Meta:
         model = Profile
         fields = ['photo']
